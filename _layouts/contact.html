@@ -1,12 +1,15 @@
 ---
 layout: default
 ---
-<div id="lightning"></div>
-<script>
+<script type="text/javascript" src="https://bsp.novocare.com/sfsites/c/resource/ACN_JSLibraryLightningOut/ACN.JSLibrary.js"></script>
+        <script type="text/javascript" src="https://bsp.novocare.com/sfsites/c/resource/ACN_JSLibraryLightningOut/ACN.JSLibrary.LightningOut.js"></script>
+        <script type="text/javascript" src="https://bsp.novocare.com/lightning/lightning.out.js"></script>
+
+        <script>
             var lightningComponent = {};
 
             function initLightningOutComponent() {
-                var communityEndPoint = "https://mapapius1dev.novonordisk.com/nni/patient-cardreader/v1/api/readcard";
+                var communityEndPoint = "https://bsp.novocare.com";
                 var qCodeUrl = communityEndPoint + "/s/card-reader-upload";
                 var lightningComponentParameters = {
                     qrLabelUrl: qCodeUrl,
@@ -91,6 +94,7 @@ layout: default
 
             window.addEventListener("load", initLightningOutComponent);
         </script>
+</head>
 <article class="post">
   <header class="post-header">
     <h1 class="post-title">{{ page.title }}</h1>
