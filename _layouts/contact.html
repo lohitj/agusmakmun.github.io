@@ -4,19 +4,94 @@ layout: default
 <div id="lightning"></div>
 <script src="https://hc-tp-hoc--175d5aaeb4d-developer-edition.ap18.force.com/lightning/lightning.out.js"></script>
 <script>
-     $Lightning.use("c:uploadFileApp", function() {
-        $Lightning.createComponent("c:uploadFile", {
-             name : "Upload File"
-            },
-              "lightning",
-              function(cmp) {
-                console.log("LWC component was created");
-              }
-          );
-        },
-       'https://hc-tp-hoc--175d5aaeb4d-developer-edition.ap18.force.com/'
-      );
-</script>
+            var lightningComponent = {};
+
+            function initLightningOutComponent() {
+                var communityEndPoint = "https://mapapius1dev.novonordisk.com/nni/patient-cardreader/v1/api/readcard";
+                var qCodeUrl = communityEndPoint + "/s/card-reader-upload";
+                var lightningComponentParameters = {
+                    qrLabelUrl: qCodeUrl,
+                    uploadfromdesktoplabel: "Upload from computer" /* desktop flow */,
+                    uploadfrommobile1label: "Upload from mobile" /* desktop flow */,
+                    uploadfrommobile2label: "Take photo or upload card" /* mobile flow */,
+                };
+                var containerElementId = "mainContainer";
+                var componentOperationType = "appendComponent";
+
+                var lo = new ACN.JSLibrary.LightningOut({});
+                var apiMethod = {};
+                apiMethod.APIMethodName = "populateInsuranceForm";
+                apiMethod.APIMethodRuntime = populateInsuranceForm;
+                lo.addAPIMethod(apiMethod);
+
+                $Lightning.use(
+                    "c:ACN_LightningOutManager", // name of the Lightning app
+                    function () {
+                        // Callback once framework and app loaded
+                        $Lightning.createComponent(
+                            "c:ACN_LightningOutContainer", // top-level component of your app
+                            {
+                                notifyHandler: notifyMe,
+                                apiLibrary: lo.APILibrary,
+                                apiExecutionHandler: lo.executeAPIMethod,
+                                lightningComponentName: "c:nniBSPFileUpload",
+                                lightningComponentParameters: lightningComponentParameters,
+                            }, // attributes to set on the component when created
+                            containerElementId, // the DOM location to insert the component
+                            function (component) {
+                                lightningComponent = component;
+                                var loader = document.getElementById("loader-id");
+                                if (loader) {
+                                    loader.classList.add("hide");
+                                }
+                            }
+                        );
+                    },
+                    communityEndPoint // Community endpoint
+                );
+            }
+
+            function populateInsuranceForm(values) {
+                var obj = values.dataObject.formValues;
+                $("#bvform_on_cardholderInsuranceName").data("gaeventprepopulated", "true");
+                $("#bvform_on_cardholderInsuranceName").focus();
+                let inputIdValidator = $("#bvform_on_cardholderInsuranceName").attr("idvalidator");
+                updatingInputs[inputIdValidator](obj.plan_name);
+
+                $("#bvform_on_cardholderId").data("gaeventprepopulated", "true");
+                $("#bvform_on_cardholderId").focus();
+                let inputIdValidator1 = $("#bvform_on_cardholderId").attr("idvalidator");
+                updatingInputs[inputIdValidator1](obj.member_id);
+
+                $("#bvform_on_groupId").data("gaeventprepopulated", "true");
+                $("#bvform_on_groupId").focus();
+                let inputIdValidator2 = $("#bvform_on_groupId").attr("idvalidator");
+                updatingInputs[inputIdValidator2](obj.rx_group);
+
+                $("#bvform_on_rxBin").data("gaeventprepopulated", "true");
+                $("#bvform_on_rxBin").focus();
+                let inputIdValidator3 = $("#bvform_on_rxBin").attr("idvalidator");
+                updatingInputs[inputIdValidator3](obj.rx_bin);
+
+                $("#bvform_on_rxPcn").data("gaeventprepopulated", "true");
+                $("#bvform_on_rxPcn").focus();
+                let inputIdValidator4 = $("#bvform_on_rxPcn").attr("idvalidator");
+                updatingInputs[inputIdValidator4](obj.pcn);
+                $("#bvform_on_rxPcn").blur();
+
+                $("#bvform_on_cardholderInsuranceName").data("gaeventprepopulated", "false");
+                $("#bvform_on_cardholderId").data("gaeventprepopulated", "false");
+                $("#bvform_on_groupId").data("gaeventprepopulated", "false");
+                $("#bvform_on_rxBin").data("gaeventprepopulated", "false");
+                $("#bvform_on_rxPcn").data("gaeventprepopulated", "false");
+            }
+
+            function notifyMe(config) {
+                console.log(config);
+            }
+
+            window.addEventListener("load", initLightningOutComponent);
+        </script>
 <article class="post">
   <header class="post-header">
     <h1 class="post-title">{{ page.title }}</h1>
