@@ -3,16 +3,19 @@ layout: default
 ---
 <html>
         <head>
+        <script type="text/javascript" src="https://uat-novonordiskbsp.cs203.force.com/selfservice/sfsites/c/resource/ACN_JSLibraryLightningOut/ACN.JSLibrary.js"></script>
+        <script type="text/javascript" src="https://uat-novonordiskbsp.cs203.force.com/selfservice/sfsites/c/resource/ACN_JSLibraryLightningOut/ACN.JSLibrary.LightningOut.js"></script>
+        <script type="text/javascript" src="https://uat-novonordiskbsp.cs203.force.com/selfservice/lightning/lightning.out.js"></script>
 
         <script>
             var lightningComponent = {};
 
             function initLightningOutComponent() {
-                var communityEndPoint = "https://mapapius1dev.novonordisk.com/nni/patient-cardreader/v1/api/readcard";
+                var communityEndPoint = "https://uat-novonordiskbsp.cs203.force.com/selfservice";
                 var qCodeUrl = communityEndPoint + "/s/card-reader-upload";
                 var lightningComponentParameters = {
                     qrLabelUrl: qCodeUrl,
-                    uploadfromdesktoplabel: "Upload from computer" /* desktop flow */,
+                    uploadfromdesktoplabel: "Upload from desktop" /* desktop flow */,
                     uploadfrommobile1label: "Upload from mobile" /* desktop flow */,
                     uploadfrommobile2label: "Take photo or upload card" /* mobile flow */,
                 };
@@ -93,7 +96,19 @@ layout: default
 
             window.addEventListener("load", initLightningOutComponent);
         </script>
-</head>
+
+        <style>
+            body {
+                background: white;
+            }
+            .card-reader-desktop-img {
+                background-image: url(https://novocare.prb.nnittest.com/content/dam/novonordisk/novocare/icons/Laptop_Icon.svg) !important;
+            }
+            .card-reader-mobile-img {
+                background-image: url(https://novocare.prb.nnittest.com/content/dam/novonordisk/novocare/icons/Phone_Icon.svg) !important;
+            }
+        </style>
+    </head>
 <article class="post">
   <header class="post-header">
     <h1 class="post-title">{{ page.title }}</h1>
